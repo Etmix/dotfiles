@@ -1,2 +1,4 @@
 # dotfiles
-My Personal Dotfiles
+My personal dotfiles
+- vim
+- i3wm
