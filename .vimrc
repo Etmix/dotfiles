@@ -213,7 +213,14 @@ endif
 " ================================================================================
 function! HeatseekerCommand(choice_command, hs_args, first_command, rest_command)
     try
-        let selections = system(a:choice_command . " | hs " . a:hs_args)
+        let filenames = system(a:choice_command)
+
+        " catch errors for empty directories and don't open the error as a filename
+        if filenames =~ '^Datei nicht gefunden' || filenames =~ '^File Not Found'
+          return
+        endif
+
+        let selections = system("hs " . a:hs_args, filenames)
     catch /Vim:Interrupt/
         redraw!
         return
@@ -236,7 +243,7 @@ else
     " We go through Windows cmd to list the files. WSL performance is really bad in ntfs...
     " Observe the awesomeness
     " TODO: Get Windows (dir) to filter the files, so that it doesn't go through the folders we ignore anyway. That should give us a big performance boost.
-    nnoremap <silent><leader>f :call HeatseekerCommand("cmd.exe /c dir /a-d /s /b \| grep -Ev '\\\\node_modules\\\\\|\\\\target\\\\\|\\\\.git\\\\\|\\\\dist\\\\\|\\\\build\\\\\|\\\\node\\\\\|\\\\.settings\\\\' \| sed -e 's\|\\\\\|/\|g' \| sed -e 's\|C:\|/mnt/c\|'", '', ':e', ':tabe')<CR>
+    nnoremap <silent><leader>f :call HeatseekerCommand("cmd.exe /c dir /a-d /s /b \| grep -Ev '\\\\node_modules\\\\\|\\\\target\\\\\|\\\\.git\\\\\|\\\\dist\\\\\|\\\\build\\\\\|\\\\node\\\\\|\\\\.settings\\\\' \| sed -e 's\|\\\\\|/\|g' \| sed -e 's\|\\([A-Z]\\):\|/mnt/\\l\\1\|'", '', ':e', ':tabe')<CR>
     " (I hate Windows.)
     " (And node_modules)
 
