@@ -75,9 +75,6 @@ command! -nargs=0 Trim call Trim()
 command Wa wa
 command WA wa
 
-" switch between buffers the smart way
-nnoremap gb :ls<CR>:b<Space>
-
 " Move around splits the smart way
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
