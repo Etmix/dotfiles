@@ -50,11 +50,11 @@ endfunction
 
 
 " colors
-"set background=dark
+set background=dark
 "set termguicolors
 "autocmd vimenter * ++nested colorscheme solarized8
 colorscheme lucius
-LuciusDarkLowContrast
+LuciusBlackHighContrast
 
 if has("gui_running")
   set guioptions -=m
